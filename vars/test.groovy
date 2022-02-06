@@ -37,4 +37,4 @@ def dbinsert(String build_name,String user_name,String build_status,String start
    
 }
 
-dbinsert(args[0],args[1],args[2],args[3],args[4])
+//dbinsert(args[0],args[1],args[2],args[3],args[4])
