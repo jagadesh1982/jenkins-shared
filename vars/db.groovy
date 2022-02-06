@@ -20,11 +20,12 @@ import java.text.SimpleDateFormat
    def build_name = args[0]
    def user_name = args[1]
    def build_status = args[2]
-   def start_date = latestdate.toString()
-   def end_date = latestdate.toString()
+   def start_date = args[3]
+   def end_date = args[4]
 		
-     def sqlstr="INSERT INTO build (build_name,user_name, build_status,start_date,end_date) VALUES "+ "(${build_name},${user_name},${build_status}, ${start_date},${end_date})"
+     def sqlstr="INSERT INTO build (build_name,user_name, build_status,start_date,end_date) VALUES ('$build_name','$user_name','$build_status', '$start_date','$end_date')"
 
+    println sqlstr
     db.execute(sqlstr);
     db.commit()
    println("Successfully committed") 
