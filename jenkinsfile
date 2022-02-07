@@ -1,0 +1,36 @@
+def start_time = java.time.LocalDateTime.now()
+def end_time
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+            
+                sh '''
+                    echo "Multiline shell steps works too"
+                    ls -lah
+                '''
+            }
+        }
+    }
+    post {
+      always {
+
+             script {
+             end_time = java.time.LocalDateTime.now()
+             
+             def BUILD_TRIGGER_BY = "${currentBuild.getBuildCauses()[0].userId}"
+             def time = "${currentBuild.durationString}".split(" ")[0]
+             def type = "${currentBuild.durationString}".split(" ")[1]
+  
+             getDatabaseConnection(type: 'GLOBAL') {
+                 sql sql: "INSERT INTO build (job_id,job_name,triggered_by,job_status,job_duration,job_start_time,job_end_time) VALUES ('${BUILD_NUMBER}','${JOB_NAME}','${BUILD_TRIGGER_BY}','${currentBuild.currentResult}','${time} ${type}','${end_time}','${start_time}');"
+             }
+
+            }
+
+         echo "I will always execute this!"
+    }
+  }
+}
